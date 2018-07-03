@@ -6,8 +6,8 @@
             {{item.name}}
         </li>
     </ul>
-    <button type="button" (click)="requestClearStuff()">Clear Stuff</button>
+    <button type="button" class="clear" (click)="requestClearStuff()">Clear Stuff</button>
 </div>
 
-<!--<app-popup *ngIf="showPopup"
-           (confirmed)="appOnConfirmedEmit($event)"></app-popup>-->
+<app-popup *ngIf="showPopup"
+           (confirmed)="appOnConfirmedEmit($event)"></app-popup>

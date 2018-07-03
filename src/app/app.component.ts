@@ -52,7 +52,9 @@ export class AppComponent implements OnInit {
 
     appOnConfirmedEmit(state: boolean) {
         this.showPopup = false;
-        this.clearStuff();
+        if (state) {
+            this.clearStuff();
+        }
     }
 
     /// some testing

@@ -1,12 +1,16 @@
 import { TestBed, async, ComponentFixture, tick, fakeAsync } from '@angular/core/testing';
-import { AppComponent, StuffModel } from './app.component';
 import { DebugElement } from '@angular/core';
-import { ServiceOneService } from './service-one.service';
-import { ServiceTwoService } from './service-two.service';
-import { of, defer } from 'rxjs';
+import { By } from '@angular/platform-browser';
 
 import { cold, getTestScheduler, hot } from 'jasmine-marbles';
 import { map } from 'rxjs/operators';
+import { of, defer } from 'rxjs';
+
+import { AppComponent, StuffModel } from './app.component';
+import { PopupComponent } from "./popup/popup.component";
+
+import { ServiceOneService } from './service-one.service';
+import { ServiceTwoService } from './service-two.service';
 
 export function asyncData<T>(data: T) {
     return defer(() => Promise.resolve(data));
@@ -17,7 +21,6 @@ describe("component", () => {
     let fixture: ComponentFixture<AppComponent>;
     let modifyStuffNameSpy: jasmine.Spy;
     let getStuffSpy: jasmine.Spy;
-    let quoteEl: HTMLElement;
     let expectedStuff: any;
     let trs: HTMLElement[];
     let newName: string;
@@ -34,7 +37,7 @@ describe("component", () => {
         getStuffSpy = serviceTwoService.getStuff.and.returnValue(of(expectedStuff));
 
         TestBed.configureTestingModule({
-            declarations: [AppComponent],
+            declarations: [AppComponent, PopupComponent],
             providers: [
                 { provide: ServiceOneService, useValue: serviceOneService },
                 { provide: ServiceTwoService, useValue: serviceTwoService }
@@ -54,16 +57,23 @@ describe("component", () => {
             expect(component.title).toEqual("Hello");
         });
 
-        //it("#requestClearStuff should init popup", () => {
-        //    component.requestClearStuff();
+        it("#requestClearStuff should init popup", () => {
+            const clearBtnDe: DebugElement = fixture.debugElement.query(By.css(".clear"));
+            const clearBtnEl: HTMLElement = clearBtnDe.nativeElement;
+            clearBtnEl.click();
+            expect(component.showPopup).toBe(true);
+            fixture.detectChanges();
+            const popupElCancel: HTMLElement = fixture.nativeElement.querySelector(".cancel");
+            const popupElConfirm: HTMLElement = fixture.nativeElement.querySelector(".confirm");
 
-        //    expect(component.showPopup).toBe(true);
-        //    fixture.detectChanges();
-        //    const testDe: DebugElement = fixture.debugElement;
-        //    const testEl: HTMLElement = testDe.nativeElement;
-        //    let popup = testEl.querySelector("app-popup");
+            //popupElCancel.click();
+            //expect(component.showPopup).toBe(false);
 
-        //})
+            //popupElConfirm.click();
+            //expect(component.showPopup).toBe(false);
+
+            expect(popupElCancel).toBeDefined();
+        })
 
         it("#clearStuff should remove stuff", () => {
             component.stuff = [
@@ -75,7 +85,6 @@ describe("component", () => {
 
         it("#changeStuff should have service change name of stuff to 'Potato'", () => {
             fixture.detectChanges();
-            //component.getStuff();
             component.changeStuff(component.stuff[0]);
             expect(component.stuff[0].name).toBe("Potato");
         });
@@ -190,7 +199,7 @@ describe("AppComponent (marbles)", () => {
         getStuffSpy = serviceTwoService.getStuff;
 
         TestBed.configureTestingModule({
-            declarations: [AppComponent],
+            declarations: [AppComponent, PopupComponent],
             providers: [
                 { provide: ServiceTwoService, useValue: serviceTwoService }
             ]
