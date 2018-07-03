@@ -8,6 +8,7 @@ import { of, defer } from 'rxjs';
 
 import { AppComponent, StuffModel } from './app.component';
 import { PopupComponent } from "./popup/popup.component";
+import { HighlightDirective } from "./highlight.directive";
 
 import { ServiceOneService } from './service-one.service';
 import { ServiceTwoService } from './service-two.service';
@@ -37,7 +38,7 @@ describe("component", () => {
         getStuffSpy = serviceTwoService.getStuff.and.returnValue(of(expectedStuff));
 
         TestBed.configureTestingModule({
-            declarations: [AppComponent, PopupComponent],
+            declarations: [AppComponent, PopupComponent, HighlightDirective],
             providers: [
                 { provide: ServiceOneService, useValue: serviceOneService },
                 { provide: ServiceTwoService, useValue: serviceTwoService }
@@ -57,12 +58,21 @@ describe("component", () => {
             expect(component.title).toEqual("Hello");
         });
 
+        it("should have 1 highlighted item at init", () => {
+            fixture.detectChanges() // init
+            trs = fixture.nativeElement.querySelectorAll('li');
+            expect(trs.length).toBe(1, 'nothing displayed');
+            fixture.detectChanges();
+            let item = trs[0];
+            const bgColor = item.style.backgroundColor;            
+            expect(bgColor).toBe("skyblue");
+        })
+
         it("#requestClearStuff should init popup", () => {
             const clearBtnDe: DebugElement = fixture.debugElement.query(By.css(".clear"));
             const clearBtnEl: HTMLElement = clearBtnDe.nativeElement;
             clearBtnEl.click();
             expect(component.showPopup).toBe(true);
-            fixture.detectChanges();
             const popupElCancel: HTMLElement = fixture.nativeElement.querySelector(".cancel");
             const popupElConfirm: HTMLElement = fixture.nativeElement.querySelector(".confirm");
 
@@ -73,7 +83,7 @@ describe("component", () => {
             //expect(component.showPopup).toBe(false);
 
             expect(popupElCancel).toBeDefined();
-        })
+        });
 
         it("#clearStuff should remove stuff", () => {
             component.stuff = [

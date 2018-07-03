@@ -7,12 +7,14 @@ import { ServiceTwoService } from "./service-two.service";
 
 import { AppComponent } from './app.component';
 import { PopupComponent } from './popup/popup.component';
+import { HighlightDirective } from './highlight.directive';
 
 
 @NgModule({
     declarations: [
         AppComponent,
-        PopupComponent
+        PopupComponent,
+        HighlightDirective
     ],
     imports: [
         BrowserModule,
