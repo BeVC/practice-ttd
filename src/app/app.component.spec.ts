@@ -69,20 +69,11 @@ describe("component", () => {
         })
 
         it("#requestClearStuff should init popup", () => {
+            fixture.detectChanges();
             const clearBtnDe: DebugElement = fixture.debugElement.query(By.css(".clear"));
             const clearBtnEl: HTMLElement = clearBtnDe.nativeElement;
             clearBtnEl.click();
             expect(component.showPopup).toBe(true);
-            const popupElCancel: HTMLElement = fixture.nativeElement.querySelector(".cancel");
-            const popupElConfirm: HTMLElement = fixture.nativeElement.querySelector(".confirm");
-
-            //popupElCancel.click();
-            //expect(component.showPopup).toBe(false);
-
-            //popupElConfirm.click();
-            //expect(component.showPopup).toBe(false);
-
-            expect(popupElCancel).toBeDefined();
         });
 
         it("#clearStuff should remove stuff", () => {
