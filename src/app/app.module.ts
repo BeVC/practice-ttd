@@ -6,11 +6,13 @@ import { ServiceOneService } from "./service-one.service";
 import { ServiceTwoService } from "./service-two.service";
 
 import { AppComponent } from './app.component';
+import { PopupComponent } from './popup/popup.component';
 
 
 @NgModule({
     declarations: [
-        AppComponent
+        AppComponent,
+        PopupComponent
     ],
     imports: [
         BrowserModule,

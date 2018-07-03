@@ -54,6 +54,17 @@ describe("component", () => {
             expect(component.title).toEqual("Hello");
         });
 
+        //it("#requestClearStuff should init popup", () => {
+        //    component.requestClearStuff();
+
+        //    expect(component.showPopup).toBe(true);
+        //    fixture.detectChanges();
+        //    const testDe: DebugElement = fixture.debugElement;
+        //    const testEl: HTMLElement = testDe.nativeElement;
+        //    let popup = testEl.querySelector("app-popup");
+
+        //})
+
         it("#clearStuff should remove stuff", () => {
             component.stuff = [
                 { id: 1, name: "stuff 1" }

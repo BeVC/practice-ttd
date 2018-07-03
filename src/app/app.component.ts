@@ -16,6 +16,8 @@ export class StuffModel {
 export class AppComponent implements OnInit {
     title = "Hello";
     stuff = [];
+    showPopup: boolean = false;
+    error: string;
 
     constructor(
         private serviceOne: ServiceOneService,
@@ -36,6 +38,10 @@ export class AppComponent implements OnInit {
             );
     }
 
+    requestClearStuff() {
+        this.showPopup = true;
+    }
+
     clearStuff() {
         this.stuff = [];
     }
@@ -44,21 +50,26 @@ export class AppComponent implements OnInit {
         stuff.name = this.serviceOne.modifyStuffName();
     }
 
-    /// some testing
-    data: StuffModel[];
-    error: string;
-    test() {
-        this.serviceTwo.getStuff()
-            //.subscribe((data: string[]) => {
-            //    this.data = data.map((name, index) => ({ id: index + 1, name: name }));
-            //});
-            .subscribe(response =>
-            //const keys = response.headers.keys();
-            //let headers = keys.map(key => `${key}: ${response.headers.get(key)}`);
-            {
-                this.data = response.body.map((name, index) => ({ id: index + 1, name: name }))
-            },
-                error => this.error = error
-            );
+    appOnConfirmedEmit(state: boolean) {
+        this.showPopup = false;
+        this.clearStuff();
     }
+
+    /// some testing
+    //data: StuffModel[];
+
+    //test() {
+    //    this.serviceTwo.getStuff()
+    //        //.subscribe((data: string[]) => {
+    //        //    this.data = data.map((name, index) => ({ id: index + 1, name: name }));
+    //        //});
+    //        .subscribe(response =>
+    //        //const keys = response.headers.keys();
+    //        //let headers = keys.map(key => `${key}: ${response.headers.get(key)}`);
+    //        {
+    //            this.data = response.body.map((name, index) => ({ id: index + 1, name: name }))
+    //        },
+    //            error => this.error = error
+    //        );
+    //}
 }
